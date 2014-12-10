@@ -1,0 +1,12 @@
+//mdm
+
+package matchState.entities;
+
+public class AutomatedTeam extends Team{
+
+	public AutomatedTeam(String name) {
+		super(name);
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,7 @@
+package matchState.entities;
+
+public class Team {
+	
+	String name;
+	
+}

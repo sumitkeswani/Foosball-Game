@@ -1,0 +1,10 @@
+package matchState;
+
+import matchState.entities.Team;
+
+public class Match {
+	//Ball ball;
+	Team teamA;
+	Team teamB;
+//	Line[] lines;
+}

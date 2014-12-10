@@ -1,0 +1,223 @@
+//mdm
+
+package matchState.entities;
+
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
+
+
+
+
+
+
+
+
+//import entities.CoOrdinates;
+import ObserverSystem.Observable;
+import ObserverSystem.Observer;
+import ObserverSystem.event.Collision;
+import ObserverSystem.event.Event;
+import gui.MyPanel;
+
+public class Ball implements Runnable, Observable, Observer{
+	
+	private BufferedImage image;
+	public CoOrdinates position;
+	public Player lastPlayer;
+	private int xSpeed;
+	private int ySpeed;
+	private int resultSpeed;
+	private double dx, dy;
+	private boolean isMoving;
+	
+	Map<Class,List<Observer>> eventMap = new HashMap<Class, List<Observer>>();
+	
+	//For singleton
+	static Ball ball = new Ball();
+	Event newEvent;
+	
+	private Ball(){
+		
+		this.isMoving = true;
+		//this.xSpeed = dx/wait;
+		//this.ySpeed = dy/wait;
+		this.dx = 2;
+		this.dy = 2;
+		this.position = new CoOrdinates(110, 110);
+		
+		
+		
+	}
+	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		while(isMoving)
+		{
+			try
+			{
+				Thread.sleep(50);//(int)resultspeed +150);			
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+			//Have to calculate new position
+		    double oldx =  this.position.x;
+			double oldy =  this.position.y;
+			double newx = oldx + dx;
+			
+			//Radius assumed to be 30
+			if(newx + 30 > MyPanel.WIDTH || newx<0)
+				dx = -dx;
+			double newy = oldy + dy ;
+			if(newy + 30 > MyPanel.HEIGHT || newy<0)
+				dy = -dy;
+			//ball.setFrame(position.x,position.y , size, size); 
+			this.position.setX(newx);
+			this.position.setY(newy);
+			
+			//System.out.println(position.x + " " + position.y);
+			//MyPanel.repaint();
+		}
+
+	}
+	public void draw(Graphics2D g2d , BufferedImage img , MyPanel panel)
+	{
+		g2d.drawImage(img,(int)position.x - 10,(int)position.y - 20 , 30, 20, null);
+	//	g2d.drawImage(img, 50, 50, null);
+	}
+	
+	public static Ball getInstance(){
+		return ball;
+	}
+	
+	public void setCoOrdinates(double x, double y){
+		this.position.x = x;
+		this.position.y = y;
+	}
+	/*
+	public void startObserving(Observable observable) {
+		//observable.addObserver(this, DirectionChangeEvent.class);
+		//observable.addObserver(this, SpeedChangeEvent.class);
+	}*/
+
+	public void setDx(int x){
+		this.dx = x;
+	}
+	
+	public void setDy(int y){
+		this.dy = y;
+	}
+/*
+	public void deflect(CoOrdinates target){
+		double beta = Math.atan((target.y - ball.position.y)/(target.x - ball.position.x));
+		dx = 2*Math.cos(beta);
+		if(dx==0.0)
+			dx = 100;
+		dy = 2*Math.sin(beta);
+		if(dy==0.0)
+			dy = 100;
+	}
+	@Override
+	public void addObserver(Observer observer, Class<?> eventClass) {
+		// TODO Auto-generated method stub
+		List<Observer> list = eventMap.get(eventClass);
+		if(list==null){
+			list = new ArrayList<Observer>();
+			eventMap.put(eventClass, list);
+		}
+		list.add(observer);
+	}
+	
+
+	@Override
+	public void notifyAllObservers() {
+		// TODO Auto-generated method stub
+		List<Observer> list = eventMap.get(newEvent.getClass());
+		if(list!=null){
+			for(Observer observer : list){
+				observer.handleEvent(newEvent);
+			}
+		}
+	}
+	@Override
+	public void startObserving(Observable observable) {
+		//observable.addObserver(this, DirectionChangeEvent.class);
+		observable.addObserver(this, Collision.class);
+	}
+
+	@Override
+	public void handleEvent(Event event) {
+		// TODO Auto-generated method stub
+		this.dx = 50;
+		this.dy = 0;
+	}
+}
+*/
+	public void deflect(CoOrdinates target){
+		double beta = Math.atan((target.y - this.position.y)/(target.x - this.position.x));
+		dx = 2*Math.cos(beta);
+		if(dx==0.0)
+			dx = 10;
+		dy = 2*Math.sin(beta);
+		if(dy==0.0)
+			dy = 10;
+	}
+	/*public static Ball getInstance()
+	{
+		return instance;		
+	}*/
+	/*
+	public void draw(Graphics2D g2d)
+	{
+		if(ball!=null)
+		{
+			g2d.setColor(color);
+			g2d.fill(ball);
+		}
+	}*/
+	@Override
+	public void addObserver(Observer observer, Class<?> eventClass) {
+		// TODO Auto-generated method stub
+		List<Observer> list = eventMap.get(eventClass);
+		if(list==null){
+			list = new ArrayList<Observer>();
+			eventMap.put(eventClass, list);
+		}
+		list.add(observer);
+	}
+	
+	
+	@Override
+	public void notifyAllObservers() {
+		// TODO Auto-generated method stub
+		List<Observer> list = eventMap.get(newEvent.getClass());
+		if(list!=null){
+			for(Observer observer : list){
+				observer.handleEvent(newEvent);
+			}
+		}
+	}
+
+	@Override
+	public void startObserving(Observable observable) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleEvent(Event event) {
+		// TODO Auto-generated method stub
+		
+	}	
+}

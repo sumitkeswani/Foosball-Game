@@ -1,0 +1,35 @@
+package matchState;
+
+import matchState.entities.AutomatedTeam;
+import matchState.entities.Team;
+import matchState.entities.UserDefinedTeam;
+
+public class MatchBuilder {
+	private static MatchBuilder instance = new MatchBuilder();
+	private Match match;
+	private int constructedTeams = 0;
+	
+	private MatchBuilder(){
+	
+		this.match = new Match();
+	}
+	
+	public static MatchBuilder getBuilderInstance(){
+		return instance;
+	}
+	
+	public MatchBuilder makeMultiPlayerTeams(String nameA, String nameB){
+		match.teamA = new UserDefinedTeam(nameA);
+		match.teamB = new UserDefinedTeam(nameB);
+		return this;
+	}
+	
+	public MatchBuilder makeSinglePlayerTeams(String nameA, String nameB){
+		match.teamA = new UserDefinedTeam(nameA);
+		match.teamB = new AutomatedTeam(nameB);
+		return this;
+	}
+	
+	
+	
+}

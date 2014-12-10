@@ -1,0 +1,13 @@
+//mdm
+
+package ObserverSystem;
+import ObserverSystem.event.Event;
+
+
+public interface Observer {
+	
+	public void startObserving(Observable observable);	
+	public void handleEvent(Event event);
+
+}
+

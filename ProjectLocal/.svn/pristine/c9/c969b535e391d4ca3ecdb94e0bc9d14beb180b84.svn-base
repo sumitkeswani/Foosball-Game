@@ -1,0 +1,17 @@
+package main;
+
+import gui.MyPanel;
+
+import javax.swing.JFrame;
+
+
+public class MainClass {
+	public static void main(String[] args){
+		JFrame window = new JFrame("AP Project");
+		window.setSize(500, 300);
+		window.setContentPane(new MyPanel());
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.pack();
+		window.setVisible(true);
+	}
+}

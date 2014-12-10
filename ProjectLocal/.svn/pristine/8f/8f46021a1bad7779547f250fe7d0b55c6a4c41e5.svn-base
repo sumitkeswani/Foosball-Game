@@ -1,0 +1,7 @@
+//mdm
+
+package ObserverSystem.event;
+
+public class Event {
+
+}

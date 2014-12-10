@@ -1,0 +1,192 @@
+//mdm
+
+package gameState;
+
+import gui.BackGround;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
+
+import javax.swing.*;
+
+public class SelectFormation1 extends GameState{
+	GameStateManager gsm;
+	BackGround bg;
+	
+	private String[] options1 = {"3", "4", "5","6"};
+	private String[] options2 = {"2","3", "4", "5","6"};
+	private String[] options3 = {"1", "2", "3","4"};
+	
+	private int sum;
+	private int pointer;
+	private int ptr;
+	
+	//For user-defined team
+	private int noOfDefenders = 4;
+	private int noOfAttackers = 4;
+	private int noOfMidFielders = 2;
+	
+	//For automated team
+	private int numOfDefenders = 3;
+	private int numOfAttackers = 4;
+	private int numOfMidFielders = 3;
+	
+	//Strings
+	Color titleColor;
+	Font titleFont;
+	Font font;
+	
+	public SelectFormation1(GameStateManager gsm){
+		this.gsm = gsm;
+		bg = new BackGround("/Foosball.png");
+		
+		
+	}
+	
+	
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		titleColor = new Color(255, 150, 150);
+		titleFont = new Font("Monotype Corsiva", Font.PLAIN, 70);
+		font = new Font("Times New Roman", Font.PLAIN, 40);
+	    sum=0;	
+	    ptr=0;
+		
+	}
+
+	@Override
+	public void draw(Graphics2D g) {
+		// TODO Auto-generated method stub
+		bg.draw(g);
+	
+		g.setColor(titleColor);
+		g.setFont(titleFont);
+		g.drawString("Foosball", 375, 200);
+		
+		// draw menu options
+		g.setFont(font);
+		for(int i = 0; i < options1.length; i++) {
+			if(i == ptr) {
+				g.setColor(Color.GREEN);
+			}
+			else {
+				g.setColor(Color.BLACK);
+			}
+			g.drawString(options1[i], 150, 370 + i * 40);
+		}
+		
+		for(int i = 0; i < options2.length; i++) {
+			if(i+options1.length == ptr) {
+				g.setColor(Color.GREEN);
+			}
+			else {
+				g.setColor(Color.BLACK);
+			}
+			g.drawString(options2[i], 250, 370 + i * 40);
+		}
+		for(int i = 0; i < options3.length; i++) {
+			if(i+options1.length+options2.length == ptr) {
+				g.setColor(Color.GREEN);
+			}
+			else {
+				g.setColor(Color.BLACK);
+			}
+			g.drawString(options3[i], 450, 370 + i * 40);
+		}
+		if( this.ptr == 100)
+		{
+			if(this.sum == 10)
+			{
+				g.drawString("Thank You. Press Enter to move forward", 290,490 );
+			}
+			else
+			{
+				//System.out.println("wronf info");
+				g.drawString("Wrong configuration!!\n Please press Enter to try again", 290,490 );
+			    
+			}
+		}
+	}
+
+	@Override
+	public void keyPressed(int k) {
+		if(k == KeyEvent.VK_ENTER){
+		gsm.getBuilder().Team1makeLines(gsm.getBuilder().getMatch().teamA, noOfDefenders, noOfMidFielders, noOfAttackers);
+		gsm.getBuilder().Team2makeLines(gsm.getBuilder().getMatch().teamB, numOfDefenders, numOfMidFielders, numOfAttackers);
+		gsm.setState(3);
+		}// TODO Auto-generated method stub
+		if(k == KeyEvent.VK_ENTER){
+			
+			if(ptr<options1.length){
+				sum = sum + Integer.parseInt(options1[ptr]);
+				ptr = options1.length;
+				
+			}
+			else if(ptr < options2.length+options1.length){
+				sum = sum + Integer.parseInt(options2[ptr-options1.length]);
+				ptr = options2.length+options1.length;
+				
+			}
+			else if(ptr < options3.length + options2.length + options1.length){
+				sum = sum + Integer.parseInt(options3[ptr-options1.length-options2.length+2]);
+				ptr = 100;
+				
+			}
+			
+			else if(ptr == 100){
+			if(sum == 10){
+			gsm.getBuilder().Team1makeLines(gsm.getBuilder().getMatch().teamA, noOfDefenders, noOfMidFielders, noOfAttackers);
+			gsm.getBuilder().Team2makeLines(gsm.getBuilder().getMatch().teamB, numOfDefenders, numOfMidFielders, numOfAttackers);
+			gsm.setState(3);//we have to make this 3
+			
+			}}
+            else if (ptr >= 100){
+				
+				ptr = 0;
+				sum = 0;
+				
+			}
+			System.out.println("Enter "+ptr+" sum "+sum);
+	}
+		else if(k == KeyEvent.VK_UP && ptr == 0){
+			ptr = options1.length - 1;
+		}
+		
+		else if(k == KeyEvent.VK_UP && ptr == options1.length){
+			ptr = options2.length - 1 + options1.length;
+		}
+		else if(k == KeyEvent.VK_UP && ptr == options2.length+options1.length){
+			ptr = options3.length - 1 + options2.length + options1.length ;
+		}
+		
+		else if(k == KeyEvent.VK_UP && ptr <100){
+			ptr = ptr -1;
+		}
+		
+		else if(k == KeyEvent.VK_DOWN && ptr == options1.length - 1){
+			ptr = 0;
+		}
+		else if(k == KeyEvent.VK_DOWN && ptr == options1.length + options2.length - 1){
+			ptr = options1.length;
+		}
+		else if(k == KeyEvent.VK_DOWN && ptr == options1.length+options2.length + options3.length - 1){
+			ptr = options2.length + options1.length;
+		}
+		
+		else if(k == KeyEvent.VK_DOWN && ptr < 100){
+			ptr = ptr + 1;
+		}
+	}
+
+	@Override
+	public void keyReleased(int k) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

@@ -1,0 +1,12 @@
+package matchState;
+
+public class MatchBuilder {
+	
+	private Match match;
+	
+	public MatchBuilder(){
+	
+		this.match = new Match();
+	}
+	
+}

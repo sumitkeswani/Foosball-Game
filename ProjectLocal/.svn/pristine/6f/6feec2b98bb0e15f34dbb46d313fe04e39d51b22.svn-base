@@ -1,0 +1,45 @@
+package gameState;
+
+import java.awt.Graphics2D;
+
+import matchState.MatchBuilder;
+
+public class MatchState extends GameState{
+	
+	//game state manager
+	private GameStateManager gsm;
+	
+	//Match Builder
+	MatchBuilder builder;
+	
+	public MatchState(GameStateManager gsm){
+		this.gsm = gsm;
+		this.builder = new MatchBuilder();
+	};
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		//System.out.println("you are here");
+		
+	}
+
+	@Override
+	public void draw(Graphics2D g) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(int k) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(int k) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

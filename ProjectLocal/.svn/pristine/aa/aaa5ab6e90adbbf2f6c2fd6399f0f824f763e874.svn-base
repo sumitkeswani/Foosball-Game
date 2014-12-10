@@ -1,0 +1,69 @@
+//mdm
+
+package gameState;
+
+import java.awt.event.KeyEvent;
+
+public class Thread2 implements Runnable{
+
+	public volatile boolean w = false;
+	
+	public GameStateManager gsm;
+	public Thread2(GameStateManager gsm)
+	{
+		this.gsm=gsm;
+	}
+	@Override
+	public void run() {
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("B");
+		// TODO Auto-generated method stub
+		while(true){
+			if(w == true && gsm.thread1.up ==true){
+				System.out.println("w is true and up is true");
+				
+			}
+			else if(w==true)
+			{
+				System.out.println("w is true");
+			}
+			else{
+			//	System.out.println("w is false");
+			}
+			//System.out.println("up"+up);
+		}
+     }
+	public void keyPressed(int k) {
+			// TODO Auto-generated method stub
+			/*if(k == KeyEvent.VK_UP){
+				System.out.println("pressed up");
+				w = true;
+				//System.out.println(t1.up);
+			}*/
+			if(k == KeyEvent.VK_W){
+				//System.out.println("pressed w");
+				w = true;
+				//System.out.println(t2.w);
+			}
+		}
+	
+	
+		public void keyReleased(int k) {
+			// TODO Auto-generated method stub
+			/*if(k == KeyEvent.gVK_UP){
+				System.out.println("released up");
+				up = false;
+			}/*
+			*/if(k == KeyEvent.VK_W){
+				//System.out.println("released w");
+				w = false;
+			
+			}
+		}
+}
+	

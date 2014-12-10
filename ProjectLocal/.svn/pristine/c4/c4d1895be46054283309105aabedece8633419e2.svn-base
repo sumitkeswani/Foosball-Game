@@ -1,0 +1,49 @@
+//mdm
+
+package gameState;
+
+import java.awt.Graphics2D;
+
+import backGround.BackGround;
+
+public class TossState extends GameState{
+
+	GameStateManager gsm;
+	BackGround bg = new BackGround("/random-acts-of-kindness.jpg", 1);
+	public TossState(GameStateManager gsm){
+	
+		this.gsm=gsm;
+		
+	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		bg.update();
+	}
+
+	@Override
+	public void draw(Graphics2D g) {
+		// TODO Auto-generated method stub
+		bg.draw(g);
+//		g.drawString("Foosball", 80, 70);
+	}
+
+	@Override
+	public void keyPressed(int k) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(int k) {
+		// TODO Auto-generated method stub
+		
+	}
+}

@@ -1,0 +1,20 @@
+//mdm
+
+package ObserverSystem.event;
+
+import matchState.entities.Ball;
+import ObserverSystem.Observable;
+
+public class Collision extends Event{
+/*
+	public Collision(Observable source) {
+		super(source);
+		Ball ball;
+		ball = Ball.getInstance();
+		ball.setDx(0);
+		ball.setDy(0);
+		System.out.println("collision happened!!");
+		// TODO Auto-generated constructor stub
+	}*/
+
+}

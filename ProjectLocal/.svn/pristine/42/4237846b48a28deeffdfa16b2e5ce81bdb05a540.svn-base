@@ -1,0 +1,168 @@
+package gameState;
+
+import gui.BackGround;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+
+import matchState.DifficultyLevel;
+import matchState.Intermediate;
+import matchState.Novice;
+import matchState.Pro;
+
+public class ConfigState extends GameState{
+
+	//Game state manager
+	private GameStateManager gsm;
+	private BackGround bg;
+	private String[] options = {"You vs Computer", "You vs Friend"};
+	private String[] options2 = {"Novice", "Intermediate", "Pro"};
+	private Color titleColor;
+	private Font titleFont;
+	private Font font;
+	private int ptr;
+	private int selectedOption;
+	
+	private int ptr2;
+	
+	public ConfigState(GameStateManager gsm){
+		this.gsm = gsm;
+		bg = new BackGround("/Foosball.png");
+		this.ptr = 0;
+		this.ptr2 = 10;
+	//	this.selectedOption = 0;  not required
+	}
+
+	
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		titleColor = new Color(255, 150, 150);
+		titleFont = new Font("Monotype Corsiva", Font.PLAIN, 50);
+		font = new Font("Times New Roman", Font.PLAIN, 30);
+		
+	}
+
+	@Override
+	public void draw(Graphics2D g) {
+		// TODO Auto-generated method stub
+		
+		bg.draw(g);
+	   
+		// draw title
+		g.setColor(titleColor);
+		g.setFont(titleFont);
+		g.drawString("Choose your settings", 220, 100);
+			
+		// draw menu options
+		g.setFont(font);
+		for(int i = 0; i < options.length; i++) {
+			if(i == ptr) {
+				g.setColor(Color.GREEN);
+			}
+			else {
+				g.setColor(Color.BLACK);
+			}
+			g.drawString(options[i], 220, 175 + i * 40);
+		}
+		
+		//draw difficulty level options.
+		g.setColor(titleColor);
+		g.setFont(titleFont);
+		g.drawString("Choose Difficulty", 220, 300);
+		g.setFont(font);
+		for(int i = 0; i < options2.length; i++) {
+			if(i == ptr2) {
+				g.setColor(Color.GREEN);
+			}
+			else {
+				g.setColor(Color.BLACK);
+			}
+			g.drawString(options2[i], 220, 350 + i * 40);
+		}
+		
+	}
+
+	@Override
+	public void keyPressed(int k) {
+	  if(this.selectedOption == 0){
+		// TODO Auto-generated method stub
+		if(k == KeyEvent.VK_ENTER && ptr == 0){
+			gsm.getBuilder().makeSinglePlayerTeams("ManU", "Chelsea");
+			ptr = 10;
+			ptr2 = 0;
+			//gsm.setState(2);
+			
+		}
+		else if(k == KeyEvent.VK_ENTER && ptr == 1){
+			gsm.getBuilder().makeMultiPlayerTeams("ManU", "Chelsea");
+		//	gsm.setState(2); 
+			ptr = 10;
+			ptr2 = 0;
+		}
+		else if(k == KeyEvent.VK_ENTER && ptr2 == 0){
+			gsm.getBuilder().makeSinglePlayerTeams("ManU", "Chelsea");
+		    DifficultyLevel level = new Novice(gsm.getBuilder().getMatch());
+		    this.gsm.getBuilder().addDifficultyLevel(level);
+		    
+			gsm.setState(2);
+			
+		}
+		else if(k == KeyEvent.VK_ENTER && ptr2 == 1){
+			gsm.getBuilder().makeSinglePlayerTeams("ManU", "Chelsea");
+			DifficultyLevel level = new Intermediate(gsm.getBuilder().getMatch());
+		    this.gsm.getBuilder().addDifficultyLevel(level);
+		    
+			gsm.setState(2);
+			
+		}	
+		else if(k == KeyEvent.VK_ENTER && ptr2 == 2){
+			gsm.getBuilder().makeSinglePlayerTeams("ManU", "Chelsea");
+			DifficultyLevel level = new Pro(gsm.getBuilder().getMatch());
+		    this.gsm.getBuilder().addDifficultyLevel(level);
+			gsm.setState(2);
+			
+		}
+		else if(k == KeyEvent.VK_UP && ptr == 0){
+			ptr = 1;
+		}
+		else if(k == KeyEvent.VK_UP && ptr ==1){
+			ptr = ptr -1;
+		}
+		else if(k == KeyEvent.VK_DOWN && ptr == 1){
+			ptr = 0;
+		}
+		else if(k == KeyEvent.VK_DOWN && ptr ==0){
+			ptr = ptr + 1;
+		}
+		else if(k == KeyEvent.VK_DOWN && ptr2 ==0){
+			ptr2 = ptr2 + 1;
+		}
+		else if(k == KeyEvent.VK_DOWN && ptr2 ==1){
+			ptr2 = ptr2 + 1;
+		}
+		else if(k == KeyEvent.VK_DOWN && ptr2 ==2){
+			ptr2 = 0;
+		}
+		else if(k == KeyEvent.VK_UP && ptr2 ==0){
+			ptr2 = 2;
+		}
+		else if(k == KeyEvent.VK_UP && ptr2 ==1){
+			ptr2 = ptr2 -1;
+		}
+		else if(k == KeyEvent.VK_UP && ptr2 ==2){
+			ptr2 = ptr2 -1;
+		}
+	  }		
+		
+	}
+
+	@Override
+	public void keyReleased(int k) {
+		// TODO Auto-generated method stub
+	
+	}
+	
+}

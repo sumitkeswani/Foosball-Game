@@ -1,0 +1,42 @@
+package matchState.entities;
+
+import java.awt.image.BufferedImage;
+import java.util.Observable;
+import java.util.Observer;
+
+
+public class Player implements Observer{
+
+	private String name;
+	private Team team;
+	CoOrdinates position;
+	private Line line;
+	private double minKickSpeed;
+	private double maxKickSpeed;
+	private BufferedImage playerImage = null;
+	
+	public void setPosition(double x, double y){
+		position.setX(x);
+		position.setY(y);
+	}
+	
+	
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public Player(String name,CoOrdinates position ,Line line, Team team)
+	{
+		this.name = name;
+		this.position = new CoOrdinates(position.x,position.y);
+		this.line = line;
+		this.minKickSpeed =(int)Math.random()*40+1;
+		this.maxKickSpeed = (int)Math.random()*40+50;
+		this.team = team;
+	}
+
+	
+	
+}

@@ -1,0 +1,19 @@
+package matchState.entities;
+
+import javax.swing.JComponent;
+
+public class Team extends JComponent{
+	
+	private String name;
+	private int score;
+	private boolean wonToss = false;
+
+	
+	public Team(String name){
+		this.name = name;
+		this.score = 0;
+	}
+	
+	
+	
+}

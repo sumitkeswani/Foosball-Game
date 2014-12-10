@@ -1,0 +1,283 @@
+//mdm
+
+package gameState;
+
+import gui.BackGround;
+
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.geom.Line2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+
+import matchState.MatchBuilder;
+import matchState.entities.Line;
+import matchState.entities.Team;
+
+public class MatchState extends GameState{
+	
+	
+	//static boolean w = false;
+	//game state manager
+	BackGround bg;
+	private GameStateManager gsm;
+	BufferedImage playerBlueImage;
+	BufferedImage playerRedImage;
+	Line2D.Double[] l;
+	BufferedImage ballImage;
+	
+	//TestA t1;
+	//TestB t2;
+	//Match Builder
+	//MatchBuilder builder;
+	
+	public MatchState(GameStateManager gsm){
+		this.gsm = gsm;
+		bg = new BackGround("/Foosball.png");
+		
+	};
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		//System.out.println("you are here");
+		//t1 = new TestA();
+		//t2 = new TestB();
+		//Thread th1 = new Thread(t1);
+		//Thread th2 = new Thread(t2);
+		//th1.start();
+		//th2.start();
+		
+	
+		try {
+			this.ballImage = ImageIO.read(new File("Resources/ball.png"));
+			this.playerBlueImage = ImageIO.read(new File("Resources/BluePlayer.png"));
+			this.playerRedImage = ImageIO.read(new File("Resources/RedPlayer.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Thread ballThread = new Thread(gsm.getBuilder().getMatch().ball);
+		
+		ballThread.start();
+	
+		
+		
+	}
+	
+	@Override
+	public void draw(Graphics2D g) {
+		Team team1 = this.gsm.getBuilder().getMatch().teamA;
+		Team team2 = this.gsm.getBuilder().getMatch().teamB;
+		
+		//System.out.println("you are here");
+		// TODO Auto-generated method stub
+		
+		bg.draw(g);
+		
+		g.setStroke(new BasicStroke(5));
+		
+		team1.keepLine.drawLine(g);
+		team1.defLine.drawLine(g);
+		team1.midfieldLine.drawLine(g);
+		team1.attackLine.drawLine(g);
+		
+		team2.keepLine.drawLine(g);
+		team2.defLine.drawLine(g);
+		team2.midfieldLine.drawLine(g);
+		team2.attackLine.drawLine(g);
+		
+		team1.keepLine.drawPlayer(g, playerRedImage, this.gsm.getMyPanel());
+		team1.defLine.drawPlayer(g, playerRedImage, this.gsm.getMyPanel());
+		team1.midfieldLine.drawPlayer(g, playerRedImage, this.gsm.getMyPanel());
+		team1.attackLine.drawPlayer(g, playerRedImage, this.gsm.getMyPanel());
+		
+		team2.keepLine.drawPlayer(g, playerBlueImage, this.gsm.getMyPanel());
+		team2.defLine.drawPlayer(g, playerBlueImage, this.gsm.getMyPanel());
+		team2.midfieldLine.drawPlayer(g, playerBlueImage, this.gsm.getMyPanel());
+		team2.attackLine.drawPlayer(g, playerBlueImage, this.gsm.getMyPanel());
+		
+		
+		this.gsm.getBuilder().getMatch().ball.draw(g, ballImage, gsm.getMyPanel());
+		
+	}
+
+	@Override
+	public void keyPressed(int k) {
+		// TODO Auto-generated method stub
+		Team team1 = this.gsm.getBuilder().getMatch().teamA;
+		Team team2 = this.gsm.getBuilder().getMatch().teamB;
+		
+		
+		if(k == KeyEvent.VK_UP)
+		{
+			team1.attackLine.moveUp();
+			team1.defLine.moveUp();
+			team1.midfieldLine.moveUp();
+			team1.keepLine.moveUpKeeper();
+		}
+/*			ThreadA Obj = new ThreadA(team1);
+			
+			Thread thread = new Thread(Obj);
+			
+			thread.start();
+			
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+		
+		if(k == KeyEvent.VK_DOWN)
+		{
+			team1.attackLine.moveDown();
+			team1.defLine.moveDown();
+			team1.midfieldLine.moveDown();
+			team1.keepLine.moveDownKeeper();
+		}
+		if(k == KeyEvent.VK_W)
+		{
+			team2.attackLine.moveUp();
+			team2.defLine.moveUp();
+			team2.midfieldLine.moveUp();
+			team2.keepLine.moveUpKeeper();
+		}
+		if(k == KeyEvent.VK_S)
+		{
+			team2.attackLine.moveDown();
+			team2.defLine.moveDown();
+			team2.midfieldLine.moveDown();
+			team2.keepLine.moveDownKeeper();
+		}
+		
+		
+	}
+
+	@Override
+	public void keyReleased(int k) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/*public class TestA  implements Runnable{
+		 public boolean up = false;
+		@Override
+		public void run() {
+			System.out.println("A");
+			// TODO Auto-generated method stub
+			while(true){
+				if(up == true){
+					System.out.println("up is true");
+				}
+				//System.out.println("up"+up);
+			}
+		}
+		
+
+	}
+	/*
+	public class TestB  implements Runnable{
+		
+
+		public boolean w = false;
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			System.out.println("B");
+			while(true){
+				if(w == true){
+					System.out.println("W is true");
+				}
+				//System.out.println("w"+w);
+			}
+			
+		}
+		
+	}
+	
+
+
+	private class MotionAction extends AbstractAction implements ActionListener
+	{
+	    private int deltaX;
+	    private int deltaY;
+	 
+	    public MotionAction(String name, int deltaX, int deltaY)
+	    {
+	        super(name);
+	 
+	        this.deltaX = deltaX;
+	        this.deltaY = deltaY;
+	    }
+	 
+	    public void actionPerformed(ActionEvent e)
+	    {
+	        //move(deltaX, deltaY);
+	    	//System.out.println("")
+	    }*/
+/*
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}*/
+/*	}*/
+	/*
+	public MotionAction addAction(String name, int deltaX, int deltaY)
+	{
+	    MotionAction action = new MotionAction(name, deltaX, deltaY);
+	 
+	    KeyStroke pressedKeyStroke = KeyStroke.getKeyStroke(name);
+	    InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+	    inputMap.put(pressedKeyStroke, name);
+	    component.getActionMap().put(name, action);
+	 
+	    return action;
+	}*/
+	
+	
+
+
+/*
+	@Override
+	public void keyPressed(int k) {
+		// TODO Auto-generated method stub
+		if(k == KeyEvent.VK_UP){
+			//System.out.println("pressed up");
+			t1.up = true;
+			//System.out.println(t1.up);
+		}
+		else if(k == KeyEvent.VK_W){
+			//System.out.println("pressed w");
+			t2.w = true;
+			//System.out.println(t2.w);
+		}
+	}
+
+	@Override
+	public void keyReleased(int k) {
+		// TODO Auto-generated method stub
+		if(k == KeyEvent.VK_UP){
+			//System.out.println("released up");
+			//up = false;
+		}
+		else if(k == KeyEvent.VK_W){
+			//System.out.println("released w");
+			//w = false;
+		}
+	}*/
+	
+}

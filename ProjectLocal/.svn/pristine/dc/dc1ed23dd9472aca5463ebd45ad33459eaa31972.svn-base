@@ -1,0 +1,74 @@
+//mdm
+
+package gameState;
+
+import gui.BackGround;
+
+import java.awt.BorderLayout;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
+
+import javax.swing.*;
+
+public class SelectFormation1 extends GameState{
+	GameStateManager gsm;
+	BackGround bg;
+	JTextField label;
+	
+	//For user-defined team
+	private int noOfDefenders = 4;
+	private int noOfAttackers = 4;
+	private int noOfMidFielders = 2;
+	
+	//For automated team
+	private int numOfDefenders = 3;
+	private int numOfAttackers = 4;
+	private int numOfMidFielders = 3;
+	
+	public SelectFormation1(GameStateManager gsm){
+		this.gsm = gsm;
+		bg = new BackGround("/Foosball.png");
+		label = new JTextField("Number of Defenders",20);
+		//label.setLayout(new GridLayout());
+		label.setVisible(true);
+	}
+	
+	
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+	//	System.out.println("hahaha");	
+		
+		
+	}
+
+	@Override
+	public void draw(Graphics2D g) {
+		// TODO Auto-generated method stub
+		
+		bg.draw(g);
+	//	System.out.println("hahaha");
+		
+		//gsm.getMyPanel().add(label);
+		gsm.getMyPanel().setLayout(new BorderLayout());
+		gsm.getMyPanel().add(label,BorderLayout.NORTH);
+	}
+
+	@Override
+	public void keyPressed(int k) {
+		// TODO Auto-generated method stub
+		if(k == KeyEvent.VK_ENTER){
+			gsm.getBuilder().Team1makeLines(gsm.getBuilder().getMatch().teamA, noOfDefenders, noOfMidFielders, noOfAttackers);
+			gsm.getBuilder().Team2makeLines(gsm.getBuilder().getMatch().teamB, numOfDefenders, numOfMidFielders, numOfAttackers);
+			gsm.setState(3);//we have to make this 3
+		}
+	}
+
+	@Override
+	public void keyReleased(int k) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

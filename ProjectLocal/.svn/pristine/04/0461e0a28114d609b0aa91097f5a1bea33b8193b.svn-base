@@ -1,0 +1,382 @@
+package matchState.entities;
+
+
+
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import matchState.entities.Interfaces.GoalKeeperLine;
+import ObserverSystem.Observable;
+import ObserverSystem.Observer;
+import ObserverSystem.event.Collision;
+import ObserverSystem.event.Event;
+
+
+
+public class Player implements Runnable, Observer, Observable{
+
+	private Event newEvent;
+	Map<Class, List<Observer>> eventMap = new HashMap<Class, List<Observer>>();
+	public String name;
+	private Team team;
+	CoOrdinates position;
+	private Line line;
+	private double minKickSpeed;
+	private double maxKickSpeed;
+	private BufferedImage playerImage = null;
+	private Ball ball;
+	
+	public void setPosition(double x, double y){
+		position.setX(x);
+		position.setY(y);
+	}
+	
+
+	public Player(String name,CoOrdinates position ,Line line, Team team)
+	{
+		this.name = name;
+		this.position = new CoOrdinates(position.x,position.y);
+		this.line = line;
+		this.minKickSpeed =(int)Math.random()*40+1;
+		this.maxKickSpeed = (int)Math.random()*40+50;
+		this.team = team;
+		this.ball = Ball.getInstance();
+	}
+
+
+	@Override
+	public void run() {
+		System.out.println("player running");
+		while(true){
+	//		System.out.println(this.position.x);
+		//List<Direction> allDirs = Arrays.asList(Direction.values());
+		// TODO Auto-generated method stub
+	//		System.out.println(ball.position.x);
+			
+			//if((ball.position.x <= this.position.x + 10) && (ball.position.x >= this.position.x-10) && (ball.position.y <= this.position.y + 10) && (ball.position.y >= this.position.y-10)){
+				
+			if(ball.position.x == 500){
+			System.out.println("hahahha!!");
+				newEvent = new Collision(this);
+				this.notifyAllObservers();
+			}
+		}
+	}
+
+
+
+	@Override
+	public void handleEvent(Event event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void startObserving(Observable observable) {
+	//	observable.addObserver(this, DirectionChangeEvent.class);
+		//observable.addObserver(this, SpeedChangeEvent.class);
+	}
+
+
+	@Override
+	public void notifyAllObservers() {
+		// TODO Auto-generated method stub
+		List<Observer> list = eventMap.get(newEvent.getClass());
+		if(list != null){
+			for(Observer observer : list){
+				observer.handleEvent(newEvent);
+			}
+		}
+	}
+
+
+	@Override
+	//public void addObserver(Observer observer, Class<?> eventClass) {
+		// TODO Auto-generated method stub
+		public void addObserver(Observer observer, Class eventClass) {
+			List<Observer> list = eventMap.get(eventClass);
+			if(list == null){
+				list = new ArrayList<Observer>();
+				eventMap.put(eventClass, list);
+			}
+			list.add(observer);
+	}
+}
+
+		
+	//}
+	
+/*	public void kickBall(Ball ball) {
+		CoOrdinates p =null;
+		p = searchTeamMate();
+		ball.deflect(p);
+	}
+	
+	/*public CoOrdinates searchTeamMate(){
+		return position;
+		CoOrdinates p = null;
+		Random random = new Random();
+
+		if(this.line instanceof GoalKeeperLine){
+			p = passToDefender();
+		}
+		else if(this instanceof Defender){
+			p = passToMidFielder();
+		}
+		else if(this instanceof MidFielder){
+			if(random.nextInt(2)==0){
+				p = passToAttacker();
+			}
+			else
+				p = shootGoal();
+		}
+		else if(this instanceof Attacker){
+
+			p = goal();
+
+		}
+		
+		return p;
+	}
+	
+	
+
+	
+	
+}
+/*
+package matchState.entities;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.util.Random;
+
+import matchState.entities.Interfaces.AttackerLine;
+import matchState.entities.Interfaces.DefenderLine;
+import matchState.entities.Interfaces.GoalKeeperLine;
+import matchState.entities.Interfaces.MidFielderLine;
+import ObserverSystem.Observable;
+import ObserverSystem.Observer;
+import ObserverSystem.event.Collision;
+import ObserverSystem.event.Event;
+
+
+
+public class Player extends Thread implements  Observer
+{
+	private String name;
+	Ball ball;
+	private Team team;
+	CoOrdinates position;
+	private Line line;
+	private double minKickSpeed;
+	private double maxKickSpeed;
+	private BufferedImage playerImage;
+	
+	public void setPosition(double x, double y){
+		position.setX(x);
+		position.setY(y);
+	}
+	
+	
+	
+	public Player(String name,CoOrdinates position ,Line line, Team team, BufferedImage img)
+	{
+		this.playerImage = img;
+		this.name = name;
+		this.position = new CoOrdinates(position.x,position.y);
+		this.line = line;
+		this.minKickSpeed =(int)Math.random()*40+1;
+		this.maxKickSpeed = (int)Math.random()*40+50;
+		this.team = team;
+		this.ball = Ball.getInstance();
+		
+	}
+
+	
+	
+	
+	public void kickBall(Ball ball) {
+		CoOrdinates p =null;
+		p = searchTeamMate();
+		ball.deflect(p);
+	}
+	
+	public CoOrdinates searchTeamMate(){
+		CoOrdinates p = null;
+		Random random = new Random();
+
+		if(this.line instanceof GoalKeeperLine){
+			p = passToDefender();
+		}
+		else if(this.line instanceof DefenderLine){
+			p = passToMidFielder();
+		}
+		else if(this.line instanceof MidFielderLine){
+			if(random.nextInt(2)==0){
+				p = passToAttacker();
+			}
+			//else
+				//p = shootGoal();
+		}
+		else if(this.line instanceof AttackerLine){
+
+			//p = goal();
+
+		}
+		
+		return p;
+	}
+
+
+	@Override
+	public void startObserving(Observable observable) {
+		// TODO Auto-generated method stub
+		observable.addObserver(this, Collision.class);
+		
+	}
+
+
+
+
+	public void handleCollisionEvent(Collision event) {
+		// TODO Auto-generated method stub
+		kickBall(ball);
+		
+	}
+/*	public void handlePositionChangeEvent(PositionChangeEvent event){
+		
+	}
+	
+	@Override
+	public void handleEvent(Event event) {
+		// TODO Auto-generated method stub
+		if(event instanceof Collision){
+			handleCollisionEvent((Collision)event);
+		}
+	}
+
+	public void startPlaying(){
+		startObserving(ball);
+	}
+
+
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+		while(true){
+			try
+			{
+				Thread.sleep(1);
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+			if(checkForCollision()){
+				ball.notifyAllObservers();
+				
+			}
+		}
+		
+	}
+	
+	
+
+	boolean checkForCollision(){
+		if((ball.position.x >= this.position.x -3) && (ball.position.x <= (this.position.x + this.playerImage.getWidth()) + 3) && (ball.position.y >= this.position.y -3) && (ball.position.y<= (this.position.y + this.playerImage.getHeight() + 3))){
+				ball.lastPlayer = this;
+				ball.newEvent = new Collision(ball);
+				return true;
+			
+		}
+		return false;
+	}
+
+
+
+	
+	public CoOrdinates passToAttacker() {
+		// TODO Auto-generated method stub
+		Random random = new Random();
+		int n = random.nextInt(this.team.attackLine.getNoOfPlayers());
+		return this.team.attackLine.getPlayers().get(n).position;
+
+	}
+
+
+
+	/*
+	public CoOrdinates shootGoal() {
+		// TODO Auto-generated method stub
+		CoOrdinates p = null;
+		Random random = new Random();
+		double y = 255 + random.nextInt(165);
+		if(this.team.name.equals("TeamA")){
+			p = new CoOrdinates(1000,y);
+			return p;
+		}
+		else if(this.team.name.equals("TeamB")){
+			p = new CoOrdinates(0,y);
+			return p;
+		}
+		return p;
+			
+	}
+
+
+
+	
+	public CoOrdinates passToMidFielder() {
+		// TODO Auto-generated method stub
+
+		Random random = new Random();
+		int n = random.nextInt(this.team.midfieldLine.getNoOfPlayers());
+		return this.team.midfieldLine.getPlayers().get(n).position;
+
+	}
+
+
+
+
+	public CoOrdinates passToDefender() {
+		// TODO Auto-generated method stub
+
+		Random random = new Random();
+		int n = random.nextInt(team.defLine.getNoOfPlayers());
+		return team.defLine.getPlayers().get(n).position;
+	}
+
+
+/*
+
+	public CoOrdinates goal() {
+		// TODO Auto-generated method stub
+		CoOrdinates p = null;
+		Random random = new Random();
+		double y = 255 + random.nextInt(165);
+		if(team.name.equals("TeamA")){
+			p = new CoOrdinates(1000,y);
+			return p;
+		}
+		else if(team.name.equals("TeamB")){
+			p = new CoOrdinates(0.0,y);
+			return p;
+		}
+		return p;
+		
+	}
+
+*/
+
+
+
+
+	

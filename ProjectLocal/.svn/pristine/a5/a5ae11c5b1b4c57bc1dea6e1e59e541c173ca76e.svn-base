@@ -1,0 +1,60 @@
+//mdm
+
+package gameState;
+
+import java.awt.event.KeyEvent;
+
+public class Thread1 implements Runnable{
+
+	public GameStateManager gsm;
+	public volatile boolean up;
+	public Thread1(GameStateManager gsm)
+	{
+		up=false;
+		this.gsm=gsm;
+	}
+	@Override
+	public void run() {
+		System.out.println("A");
+		// TODO Auto-generated method stub
+		while(true){
+			
+			if(up==true)
+			{
+				
+			}
+				//System.out.println("up is true");
+			
+			//System.out.println("up"+up);
+		}
+     }
+	public void keyPressed(int k) {
+			// TODO Auto-generated method stub
+			if(k == KeyEvent.VK_UP){
+				//System.out.println("pressed up");
+				up = true;
+				//System.out.println(t1.up);
+			}
+			/*else if(k == KeyEvent.VK_W){
+				//System.out.println("pressed w");
+				t2.w = true;
+				//System.out.println(t2.w);
+			}*/
+		}
+	
+	
+		public void keyReleased(int k) {
+			// TODO Auto-generated method stub
+			if(k == KeyEvent.VK_UP){
+				//System.out.println("released up");
+				up = false;
+			}/*
+			else if(k == KeyEvent.VK_W){
+				//System.out.println("released w");
+				//w = false;
+			}*/
+		}
+		
+		//public void moveUp()
+}
+	
